@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'body:ntext',
             'level',
             'parent_id',
-            //'date',
+            'date',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

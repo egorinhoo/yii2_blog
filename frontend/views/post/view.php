@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use frontend\widgets\CommentWidget;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
@@ -12,12 +13,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div>
     <div class = "post">
-        <h1 style = "display: inline-block; margin: 20px 40%;" ><?= Html::encode($this->title) ?></h1>
-        <p style = "width: 80%; margin: 0 8%;"> <?= $model->body; ?> </p>
+        <h1 style = ""><?= Html::encode($this->title) ?></h1>
+        <p> <?= $model->body; ?> </p>
         <hr>
     </div>
     <div class = "comments">
-        
+        <?php
+            echo CommentWidget::widget(['post' => $model]);
+        ?>
     </div>
 
 

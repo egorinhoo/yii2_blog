@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "comment".
@@ -56,6 +59,20 @@ class Comment extends \yii\db\ActiveRecord
             'level' => 'Level',
             'parent_id' => 'Parent ID',
             'date' => 'Date',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'date',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'date',
+                ],
+                'value' => new Expression('NOW()'),
+                ]
         ];
     }
 
