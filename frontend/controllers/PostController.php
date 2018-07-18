@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Comment;
 use Yii;
 use common\models\Post;
 use frontend\models\PostSearch;
@@ -37,10 +38,12 @@ class PostController extends Controller
     {
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if(Yii::$app->request->get('create_comment')){
 
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,пше
         ]);
     }
 
@@ -52,28 +55,43 @@ class PostController extends Controller
      */
     public function actionView($id)
     {
+        $model = new Comment();
+        $model->post_id = $id;
+        $model->level = 0;
+        $model->parent_id = 0;
+        $model->user_id = Yii::$app->user->id;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            echo 'model save';
+            return $this->redirect(['view', 'id' => $model->post_id]);
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+    public function actionReply(){
+        $model = new Comment();
+
     }
 
     /**
      * Creates a new Post model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Post();
+//     */
+//    public function actionCreate()
+//    {
+//        $model = new Post();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Updates an existing Post model.
@@ -81,19 +99,19 @@ class PostController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+    //     */
+    //    public function actionUpdate($id)
+    //    {
+    //        $model = $this->findModel($id);
+    //
+    //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //            return $this->redirect(['view', 'id' => $model->id]);
+    //        }
+    //
+    //        return $this->render('update', [
+    //            'model' => $model,
+    //        ]);
+    //    }
 
     /**
      * Deletes an existing Post model.
@@ -102,12 +120,6 @@ class PostController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Post model based on its primary key value.

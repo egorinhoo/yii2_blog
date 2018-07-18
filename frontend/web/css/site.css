@@ -154,3 +154,7 @@ a.desc:after {
     border: 1px solid red;
     clear: both;
 }
+#comment-reply{
+    padding:10px;
+
+}

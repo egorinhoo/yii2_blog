@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use frontend\widgets\CommentWidget;
+use yii\widgets\ActiveForm;
+
 
 
 /* @var $this yii\web\View */
@@ -10,6 +12,7 @@ use frontend\widgets\CommentWidget;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div>
     <div class = "post">
@@ -17,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p> <?= $model->body; ?> </p>
         <hr>
     </div>
+    <?php echo $this->render('comment') ?>
     <div class = "comments">
         <?php
             echo CommentWidget::widget(['post' => $model]);

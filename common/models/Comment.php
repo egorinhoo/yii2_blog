@@ -38,7 +38,7 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             [['post_id'], 'required'],
-            [['post_id', 'user_id', 'level', 'parent_id'], 'integer'],
+            [['post_id', 'user_id', 'level', 'parent_id', 'left_key', 'right_key'], 'integer'],
             [['body'], 'string'],
             [['date'], 'safe'],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Post::className(), 'targetAttribute' => ['post_id' => 'id']],

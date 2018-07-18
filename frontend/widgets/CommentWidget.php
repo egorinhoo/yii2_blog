@@ -19,22 +19,33 @@ class CommentWidget extends Widget
 {
     public $comments;
     public $post;
-
+    public $com_sort = [];
     public function init()
     {
         parent::init();
         $this->comments = Comment::find()->where(['post_id' => $this->post->id])->all();
+        $this->sortComments();
+
+    }
+    public function sortComments($parent_id = 0){
+        foreach ($this->comments as $comment){
+            if($comment->parent_id == $parent_id){
+                $this->com_sort[] = $comment;
+                $this->sortComments($comment->id);
+            }
+        }
     }
     public function run()
     {
-        echo Html::textInput('text');
-        foreach ($this->comments as $comment) {
-            $user = User::find()->where(['id' => $comment->user_id])->limit(1)->one();
-            echo $this->render('comment', ['body' => $comment->body,
-                'level' => $comment->level,
-                'name' => $user->username,
-                'date' => $comment->date]);
-        }
+            foreach ($this->com_sort as $comment) {
+                $user = User::find()->where(['id' => $comment->user_id])->limit(1)->one();
+                echo $this->render('comment', ['body' => $comment->body,
+                    'level' => $comment->level,
+                    'name' => $user->username,
+                    'date' => $comment->date,
+                    'id' => $comment->id,
+                    'post_id' => $comment->post_id]);
+            }
     }
 
 
