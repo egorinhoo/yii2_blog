@@ -120,16 +120,17 @@ a.desc:after {
 }
 
 .post h1{
-    border:1px solid black;
+
     text-align: center;
 
 }
 .post p{
-    border:1px solid black;
+
     padding: 20px 10%;
 }
 .comment{
-    border: 1px solid black;
+    border:1px solid #1b6d85;
+    border-radius: 5px;
     width: 500px;
     padding:0;
     margin-bottom: 10px;
@@ -137,24 +138,55 @@ a.desc:after {
 .comment p{
     margin:0;
     padding: 10px;
+
 }
 #comment-name{
-    border:1px solid yellow;
+    padding: 10px;
+    background: aqua;
+    border-top-left-radius: inherit;
+    border-right: 1px solid #2aabd2;
+    border-bottom: 1px solid #2aabd2;
     float: left;
     width: 50%;
 
 }
 #comment-date{
-    border: 1px solid blue;
+    padding: 10px;
+    background: aqua;
+    border-top-right-radius: inherit;
+    border-bottom: 1px solid #2aabd2;
     float: right;
     width: 50%;
 }
 #comment-body{
 
-    border: 1px solid red;
+    padding:10px;
     clear: both;
+
 }
 #comment-reply{
-    padding:10px;
 
+    padding:10px;
+    display: inline-block;
+    float: right;
+    margin-right:15px;
+
+}
+#comment-delete{
+    display: inline-block;
+    float: right;
+}
+#create_comment {
+    width: 500px;
+    margin-left: 10%;
+}
+#reply-form{
+    display: none;
+    width: 450px;
+    margin: 0 auto;
+}
+#reply-btn{
+    float:right;
+    background: #2aabd2;
+    margin-bottom: 10px;
 }

@@ -6,6 +6,7 @@ use common\models\Comment;
 use Yii;
 use common\models\Post;
 use frontend\models\PostSearch;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -43,7 +44,7 @@ class PostController extends Controller
         }
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,пше
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -59,17 +60,31 @@ class PostController extends Controller
         $model->post_id = $id;
         $model->level = 0;
         $model->parent_id = 0;
-        $model->user_id = Yii::$app->user->id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo 'model save';
+        $model->left_key = 1;
+        $model->right_key = 2;
+        if(Yii::$app->user->isGuest){
+            $model->user_id = null;
+        }
+        else
+            $model->user_id = Yii::$app->user->id;
+        if ($model->load(Yii::$app->request->post())){
+            if($model->left_key == 1){
+                $model->left_key = Comment::find()->max('right_key') + 1;
+                $model->right_key = $model->left_key+1;
+            }
+            Yii::$app->db->createCommand('UPDATE comment SET left_key=left_key+2 WHERE left_key>'.$model->left_key)
+                ->execute();
+            Yii::$app->db->createCommand('UPDATE comment SET right_key=right_key+2 WHERE right_key>='.$model->left_key)
+                ->execute();
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->post_id]);
         }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-    public function actionReply(){
-        $model = new Comment();
+    public function actionDelete(){
 
     }
 

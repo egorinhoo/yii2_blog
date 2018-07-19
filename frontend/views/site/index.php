@@ -12,7 +12,9 @@ $this->title = 'MyBlog';
     <div class="col-sm-8 post-index">
 
         <h1><?= Html::encode($this->title) ?></h1>
-
+<!--        --><?php
+//        \yii\widgets\ListView::begin()
+//        ?>
 
     </div>
 </div>

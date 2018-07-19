@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <p> <?= $model->body; ?> </p>
         <hr>
     </div>
-    <?php echo $this->render('comment') ?>
+    <?php echo $this->render('comment_form') ?>
+    <?php echo $this->render('../../widgets/views/reply_form') ?>
     <div class = "comments">
         <?php
             echo CommentWidget::widget(['post' => $model]);

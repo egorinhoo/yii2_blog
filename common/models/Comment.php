@@ -55,10 +55,11 @@ class Comment extends \yii\db\ActiveRecord
             'id' => 'ID',
             'post_id' => 'Post ID',
             'user_id' => 'User ID',
-            'body' => 'Body',
+            'body' => 'Текст комментария',
             'level' => 'Level',
             'parent_id' => 'Parent ID',
             'date' => 'Date',
+
         ];
     }
 

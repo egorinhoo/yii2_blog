@@ -16,13 +16,11 @@ $modelComment = new Comment();
 <div class="post-form">
 
     <?php $form = ActiveForm::begin(['id' => 'create_comment']); ?>
-    <?= Html::activeHiddenInput($modelComment,'parent_id',['value'=>0])?>
-    <?= Html::activeHiddenInput($modelComment,'level',['value'=>0])?>
     <?= $form->field($modelComment, 'body')->textarea(['rows' => 3]) ?>
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Оставить комментарий', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

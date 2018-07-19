@@ -9,42 +9,48 @@
 namespace frontend\widgets;
 
 use yii\base\Widget;
-use yii\helpers\Html;
 use common\models\Comment;
-use common\models\Post;
 use common\models\User;
 
 
 class CommentWidget extends Widget
 {
-    public $comments;
+    public $comments = [];
     public $post;
-    public $com_sort = [];
     public function init()
     {
         parent::init();
-        $this->comments = Comment::find()->where(['post_id' => $this->post->id])->all();
-        $this->sortComments();
-
-    }
-    public function sortComments($parent_id = 0){
-        foreach ($this->comments as $comment){
-            if($comment->parent_id == $parent_id){
-                $this->com_sort[] = $comment;
-                $this->sortComments($comment->id);
+        $comments = Comment::find()->where(['post_id' => $this->post->id])->all();
+        $count = 1;
+        while($count < count($comments) * 2) {
+            foreach ($comments as $comment) {
+                if ($comment->left_key == $count) {
+                    $this->comments[] = $comment;
+                    break;
+                }
             }
+            $count++;
         }
+
     }
     public function run()
     {
-            foreach ($this->com_sort as $comment) {
-                $user = User::find()->where(['id' => $comment->user_id])->limit(1)->one();
+            foreach ($this->comments as $comment) {
+                if(isset($comment->user_id)) {
+                    $user = User::find()->where(['id' => $comment->user_id])->limit(1)->one();
+                    $name = $user->username;
+                }
+                else
+                    $name = 'Guest';
                 echo $this->render('comment', ['body' => $comment->body,
                     'level' => $comment->level,
-                    'name' => $user->username,
+                    'name' => $name,
                     'date' => $comment->date,
                     'id' => $comment->id,
-                    'post_id' => $comment->post_id]);
+                    'post_id' => $comment->post_id,
+                    'left_key' => $comment->left_key,
+                    'right_key' => $comment->right_key,
+                    'user_id' => $comment->user_id]);
             }
     }
 
