@@ -31,6 +31,7 @@ $right_key;
                                data-right_key="<?= $right_key+1?>"
         >Ответить</a>
     </div>
+    <div id="comment-delete"><a class="delete_link delete<?=$id?>">Удалить</a></div>
     <div id="append<?=$id?>"></div>
     <div style="clear:both;"></div>
 </div>
@@ -39,6 +40,9 @@ $right_key;
 <!— Наш скрипт запроса и обработки —>
 <script type="text/javascript">
     $(document).ready(function() {
+        $('a.delete_link').click(function () {
+
+        })
 // Вешаем обработчик события "клик" на все ссылки с классом ajax_link
         $('a.ajax_link').click(function() {
 // Берем действие из атрибута data-action ссылки
@@ -51,7 +55,7 @@ $right_key;
             $('#comment-level').val(level);
             $('#comment-left_key').val(left_key);
             $('#comment-right_key').val(right_key);
-            $('.ajax_link').css('display', 'block')
+            $('.ajax_link').css('display', 'block');
             $('.link'+parent).css('display', 'none');
             var $form = $("#reply-form").css('display', 'block');
             $('#append'+parent).append($form);

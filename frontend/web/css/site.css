@@ -169,12 +169,14 @@ a.desc:after {
     padding:10px;
     display: inline-block;
     float: right;
-    margin-right:15px;
+    margin-right:10px;
 
 }
 #comment-delete{
+    padding:10px;
     display: inline-block;
     float: right;
+    margin-right: 5px;
 }
 #create_comment {
     width: 500px;

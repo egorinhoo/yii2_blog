@@ -10,7 +10,7 @@ use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use frontend\services\CommentService;
 /**
  * PostController implements the CRUD actions for Post model.
  */
@@ -39,9 +39,7 @@ class PostController extends Controller
     {
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        if(Yii::$app->request->get('create_comment')){
 
-        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -57,11 +55,7 @@ class PostController extends Controller
     public function actionView($id)
     {
         $model = new Comment();
-        $model->post_id = $id;
-        $model->level = 0;
-        $model->parent_id = 0;
-        $model->left_key = 1;
-        $model->right_key = 2;
+        $model = CommentService::createCommentDefault($model, $id);
         if(Yii::$app->user->isGuest){
             $model->user_id = null;
         }
@@ -69,17 +63,14 @@ class PostController extends Controller
             $model->user_id = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post())){
             if($model->left_key == 1){
-                $model->left_key = Comment::find()->max('right_key') + 1;
-                $model->right_key = $model->left_key+1;
+                $model = CommentService::createCommentZeroLevel($model, $id);
             }
-            Yii::$app->db->createCommand('UPDATE comment SET left_key=left_key+2 WHERE left_key>'.$model->left_key)
-                ->execute();
-            Yii::$app->db->createCommand('UPDATE comment SET right_key=right_key+2 WHERE right_key>='.$model->left_key)
-                ->execute();
+            CommentService::rewriteLeftRightKeys($model->left_key, $id);
 
             $model->save();
             return $this->redirect(['view', 'id' => $model->post_id]);
         }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

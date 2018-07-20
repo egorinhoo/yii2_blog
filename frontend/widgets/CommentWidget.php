@@ -16,14 +16,18 @@ use common\models\User;
 class CommentWidget extends Widget
 {
     public $comments = [];
+    public $users = [];
     public $post;
     public function init()
     {
         parent::init();
-        $comments = Comment::find()->where(['post_id' => $this->post->id])->all();
+        $comments = Comment::find()->where(['post_id' => $this->post->id])->with('user')->all();
         $count = 1;
         while($count < count($comments) * 2) {
             foreach ($comments as $comment) {
+                if (gettype($comment) == 'User'){
+                    $this->users[] = $comment;
+                }
                 if ($comment->left_key == $count) {
                     $this->comments[] = $comment;
                     break;
@@ -36,9 +40,9 @@ class CommentWidget extends Widget
     public function run()
     {
             foreach ($this->comments as $comment) {
+
                 if(isset($comment->user_id)) {
-                    $user = User::find()->where(['id' => $comment->user_id])->limit(1)->one();
-                    $name = $user->username;
+                    $name = $comment->user->username;
                 }
                 else
                     $name = 'Guest';
@@ -51,6 +55,7 @@ class CommentWidget extends Widget
                     'left_key' => $comment->left_key,
                     'right_key' => $comment->right_key,
                     'user_id' => $comment->user_id]);
+
             }
     }
 
